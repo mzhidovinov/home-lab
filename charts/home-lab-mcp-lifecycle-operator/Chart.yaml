@@ -1,0 +1,6 @@
+apiVersion: v2
+name: home-lab-mcp-lifecycle-operator
+description: MCP Lifecycle Operator (Red Hat fork release-v0.1.0)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

@@ -1,0 +1,15 @@
+{{- if .Values.mcpServer.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.mcpServer.name }}-config
+  namespace: {{ .Values.mcpServer.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.mcpServer.name }}
+data:
+  config.toml: |
+    log_level = {{ .Values.mcpServer.config.logLevel }}
+    port = "{{ .Values.mcpServer.port }}"
+    read_only = {{ .Values.mcpServer.config.readOnly }}
+    toolsets = [{{ range $i, $t := .Values.mcpServer.config.toolsets }}{{ if $i }}, {{ end }}"{{ $t }}"{{ end }}]
+{{- end }}

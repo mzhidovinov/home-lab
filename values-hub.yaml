@@ -11,6 +11,8 @@ clusterGroup:
       targetNamespaces: []
     external-secrets:
     eso-e2e-test:
+    mcp-lifecycle-operator-system:
+    openshift-mcp-server:
   subscriptions:
     eso:
       name: openshift-external-secrets-operator
@@ -65,3 +67,17 @@ clusterGroup:
       namespace: eso-e2e-test
       path: charts/home-lab-eso-e2e
       argoProject: hub
+    home-lab-mcp-lifecycle-operator:
+      name: home-lab-mcp-lifecycle-operator
+      namespace: mcp-lifecycle-operator-system
+      path: charts/home-lab-mcp-lifecycle-operator
+      argoProject: hub
+      annotations:
+        argocd.argoproj.io/sync-wave: "-10"
+    home-lab-mcp-server:
+      name: home-lab-mcp-server
+      namespace: openshift-mcp-server
+      path: charts/home-lab-mcp-server
+      argoProject: hub
+      annotations:
+        argocd.argoproj.io/sync-wave: "-5"

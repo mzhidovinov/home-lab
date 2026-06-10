@@ -1,0 +1,23 @@
+mcpServer:
+  enabled: true
+  name: openshift-mcp-server
+  namespace: openshift-mcp-server
+  image: quay.io/redhat-user-workloads/ocp-mcp-server-tenant/openshift-mcp-server-release-03:latest
+  port: 8080
+  route:
+    enabled: true
+    # Defaults to mcp-server.<hubClusterDomain> when empty
+    host: ""
+  config:
+    logLevel: 5
+    readOnly: false
+    toolsets:
+      - core
+      - config
+      - metrics
+      - netedge
+      - helm
+  rbac:
+    serviceAccountName: mcp-admin
+    # Lab only: grants cluster-admin to the MCP server service account
+    clusterAdmin: true

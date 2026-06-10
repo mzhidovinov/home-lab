@@ -1,0 +1,3 @@
+{{- if .Values.operator.enabled }}
+{{ .Files.Get "files/install.yaml" }}
+{{- end }}

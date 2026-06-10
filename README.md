@@ -86,3 +86,24 @@ Pattern charts that use the clustergroup `secretStore.name` value pick up the co
 ### RoleBinding patch
 
 `openshift-external-secrets` 0.0.4 creates a `Role` in `validated-patterns-secrets` for the kubernetes backend but not the matching `RoleBinding`. The local `charts/home-lab-eso-rbac` chart supplies that binding when `backend=kubernetes`.
+
+## OpenShift MCP Server (GitOps)
+
+Two local charts deploy the [MCP Lifecycle Operator](https://github.com/openshift/mcp-lifecycle-operator) and an `MCPServer` on the hub:
+
+| Argo application | Chart | Purpose |
+|------------------|-------|---------|
+| `home-lab-mcp-lifecycle-operator` | `charts/home-lab-mcp-lifecycle-operator` | CRD, operator deployment (sync-wave -10) |
+| `home-lab-mcp-server` | `charts/home-lab-mcp-server` | MCPServer CR, ConfigMap, Route, RBAC (sync-wave -5) |
+
+Requires OCP 4.22+ with **TechPreviewNoUpgrade**. Default route: `https://mcp-server.<hubClusterDomain>/mcp`.
+
+Configure toolsets, image, and RBAC in `charts/home-lab-mcp-server/values.yaml`. **Lab default binds `cluster-admin`** — change for production.
+
+Verify after Argo sync:
+
+```bash
+oc get pods -n mcp-lifecycle-operator-system
+oc get mcpserver -n openshift-mcp-server
+curl -sk https://mcp-server.apps.ocp.lab/healthz
+```

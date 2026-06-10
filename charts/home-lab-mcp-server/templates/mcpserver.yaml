@@ -1,0 +1,30 @@
+{{- if .Values.mcpServer.enabled }}
+apiVersion: mcp.x-k8s.io/v1alpha1
+kind: MCPServer
+metadata:
+  name: {{ .Values.mcpServer.name }}
+  namespace: {{ .Values.mcpServer.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.mcpServer.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+spec:
+  source:
+    type: ContainerImage
+    containerImage:
+      ref: {{ .Values.mcpServer.image | quote }}
+  config:
+    port: {{ .Values.mcpServer.port }}
+    arguments:
+      - --config
+      - /etc/mcp-config/config.toml
+    storage:
+      - path: /etc/mcp-config
+        source:
+          type: ConfigMap
+          configMap:
+            name: {{ .Values.mcpServer.name }}-config
+  runtime:
+    security:
+      serviceAccountName: {{ .Values.mcpServer.rbac.serviceAccountName }}
+{{- end }}

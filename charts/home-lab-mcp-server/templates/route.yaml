@@ -1,0 +1,23 @@
+{{- if and .Values.mcpServer.enabled .Values.mcpServer.route.enabled }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.mcpServer.name }}
+  namespace: {{ .Values.mcpServer.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.mcpServer.name }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+spec:
+  host: {{ .Values.mcpServer.route.host | default (printf "mcp-server.%s" .Values.global.hubClusterDomain) }}
+  to:
+    kind: Service
+    name: {{ .Values.mcpServer.name }}
+    weight: 100
+  port:
+    targetPort: mcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+{{- end }}

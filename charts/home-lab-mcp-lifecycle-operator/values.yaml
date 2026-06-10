@@ -1,0 +1,4 @@
+operator:
+  enabled: true
+  # Upstream manifest bundled from:
+  # https://github.com/openshift/mcp-lifecycle-operator/release-v0.1.0/dist/install.yaml
