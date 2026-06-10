@@ -10,6 +10,4 @@ data:
   config.toml: |
     log_level = {{ .Values.mcpServer.config.logLevel }}
     port = "{{ .Values.mcpServer.port }}"
-    read_only = {{ .Values.mcpServer.config.readOnly }}
-    toolsets = [{{ range $i, $t := .Values.mcpServer.config.toolsets }}{{ if $i }}, {{ end }}"{{ $t }}"{{ end }}]
 {{- end }}

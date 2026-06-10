@@ -107,7 +107,7 @@ Two local charts deploy the [MCP Lifecycle Operator](https://github.com/openshif
 
 Requires OCP 4.22+ with **TechPreviewNoUpgrade**. Default route: `https://mcp-server.<hubClusterDomain>/mcp`.
 
-Configure toolsets, image, and RBAC in `charts/home-lab-mcp-server/values.yaml`. **Lab default binds `cluster-admin`** — change for production.
+Configure image, route, and RBAC in `charts/home-lab-mcp-server/values.yaml`. Scope access via `rbac.clusterRoleName` (lab default: `cluster-admin`; use `view` or a custom ClusterRole for production).
 
 Verify after Argo sync:
 

@@ -10,14 +10,7 @@ mcpServer:
     host: ""
   config:
     logLevel: 5
-    readOnly: false
-    toolsets:
-      - core
-      - config
-      - metrics
-      - netedge
-      - helm
   rbac:
     serviceAccountName: mcp-admin
-    # Lab only: grants cluster-admin to the MCP server service account
-    clusterAdmin: true
+    # Lab default; use view or a custom ClusterRole for tighter scope
+    clusterRoleName: cluster-admin
