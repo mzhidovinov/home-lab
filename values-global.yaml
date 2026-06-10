@@ -1,6 +1,6 @@
 ---
 global:
-  pattern: multicloud-gitops
+  pattern: home-lab
   singleArgoCD: true
   options:
     useCSV: false
