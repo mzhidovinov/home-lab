@@ -35,7 +35,16 @@ HashiCorp Vault **always** stays deployed (`vault` application in `values-hub.ya
 | `vault` (default) | `vault-backend` | `vault-backend` | Vault paths under `hub/` (e.g. `secret/data/global/config-demo`) |
 | `kubernetes` | `kubernetes-backend` | `kubernetes-backend` | Kubernetes `Secret` objects in `validated-patterns-secrets` |
 
-Backend-specific overlays (`values-secret-store-vault.yaml` / `values-secret-store-kubernetes.yaml`) are merged into every application via `clusterGroup.sharedValueFiles` and set the clustergroup `secretStore.name` used by pattern charts.
+Backend-specific store metadata (`values-eso-backend-vault.yaml` / `values-eso-backend-kubernetes.yaml`) is merged via `clusterGroup.sharedValueFiles` and sets `secretStore.name` for pattern charts. These files contain **no secret values** and are safe to commit.
+
+Optional local secret overlays use `values-secret-store-vault.yaml` / `values-secret-store-kubernetes.yaml` (gitignored). Copy from the `.template` files if needed — same convention as `values-secret.yaml`:
+
+```bash
+cp values-secret-store-kubernetes.yaml.template values-secret-store-kubernetes.yaml
+cp values-secret-store-vault.yaml.template values-secret-store-vault.yaml
+```
+
+Never commit `values-secret*` files with real credentials. Use `make load-secrets` with `values-secret.yaml` as the primary secret loader per [VP secrets documentation](https://validatedpatterns.io/learn/secrets-management-in-the-validated-patterns-framework/).
 
 ### Switch to kubernetes backend
 

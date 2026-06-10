@@ -2,8 +2,8 @@
 *.swp
 *.swo
 values-secret*
-!values-secret-store-vault.yaml
-!values-secret-store-kubernetes.yaml
+!values-secret.yaml.template
+!values-secret-store-*.yaml.template
 .*.expected.yaml
 pattern-vault.init
 vault.init

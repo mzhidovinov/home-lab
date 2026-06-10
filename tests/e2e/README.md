@@ -7,7 +7,7 @@ Single `ExternalSecret` deployed via Argo CD (`home-lab-eso-e2e` app). Backend-s
 | Layer | Source |
 |-------|--------|
 | Backend toggle | `global.secretStore.backend` in `values-global.yaml` |
-| Store name | `values-secret-store-{vault\|kubernetes}.yaml` → `secretStore.name` |
+| Store name | `values-eso-backend-{vault\|kubernetes}.yaml` → `secretStore.name` |
 | Remote key | Same overlay → `e2eTest.remoteRef.key` |
 | ExternalSecret | `charts/home-lab-eso-e2e/templates/externalsecret.yaml` (one template) |
 
