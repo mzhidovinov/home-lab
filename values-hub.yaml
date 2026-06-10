@@ -2,6 +2,7 @@ clusterGroup:
   name: hub
   # Namespace is a dictionary for easier overriding (lists are supported as well)
   namespaces:
+    vault:
     external-secrets-operator:
       operatorGroup: true
       targetNamespaces: []
@@ -35,6 +36,12 @@ clusterGroup:
   #   - '/overrides/values-{{ $.Values.global.hubClusterDomain }}.yaml'
   #   - '/overrides/values-{{ $.Values.global.localClusterDomain }}.yaml'
   applications:
+    vault:
+      name: vault
+      namespace: vault
+      argoProject: hub
+      chart: hashicorp-vault
+      chartVersion: 0.1.*
     openshift-external-secrets:
       name: openshift-external-secrets
       namespace: external-secrets
