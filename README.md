@@ -17,3 +17,72 @@ The goal for this pattern is to:
 * Use a GitOps approach to manage hybrid and multi-cloud deployments across both public and private clouds.
 * Enable cross-cluster governance and application lifecycle management.
 * Securely manage secrets across the deployment.
+
+## Secrets backend switch
+
+ESO backend is controlled by one value in `values-global.yaml`:
+
+```yaml
+global:
+  secretStore:
+    backend: vault        # or kubernetes
+```
+
+HashiCorp Vault **always** stays deployed (`vault` application in `values-hub.yaml`). Switching backend only changes which `ClusterSecretStore` the `openshift-external-secrets` chart renders and where `make load-secrets` stores material.
+
+| Backend | ClusterSecretStore | Secret store name for ExternalSecrets | `make load-secrets` target |
+|---------|-------------------|---------------------------------------|----------------------------|
+| `vault` (default) | `vault-backend` | `vault-backend` | Vault paths under `hub/` (e.g. `secret/data/global/config-demo`) |
+| `kubernetes` | `kubernetes-backend` | `kubernetes-backend` | Kubernetes `Secret` objects in `validated-patterns-secrets` |
+
+Backend-specific overlays (`values-secret-store-vault.yaml` / `values-secret-store-kubernetes.yaml`) are merged into every application via `clusterGroup.sharedValueFiles` and set the clustergroup `secretStore.name` used by pattern charts.
+
+### Switch to kubernetes backend
+
+1. Set the toggle (either edit `values-global.yaml` or run `make secrets-backend-kubernetes`).
+2. Commit and push so Argo CD picks up the change.
+3. Sync the `openshift-external-secrets` and `home-lab-eso-rbac` applications.
+4. Run `make load-secrets` to populate secrets as Kubernetes `Secret` objects in `validated-patterns-secrets`.
+5. Verify:
+
+```bash
+oc get clustersecretstore kubernetes-backend
+oc get role,rolebinding -n validated-patterns-secrets
+```
+
+Vault remains running but unused by ESO until you switch back.
+
+### Switch to vault backend
+
+1. Set `global.secretStore.backend: vault` (or `make secrets-backend-vault`).
+2. Commit, push, and sync `openshift-external-secrets`.
+3. Run `make load-secrets` (configures Vault K8s auth and loads secrets into Vault).
+4. Verify:
+
+```bash
+oc get clustersecretstore vault-backend
+```
+
+### ExternalSecret store reference
+
+When authoring `ExternalSecret` manifests, match the active backend:
+
+```yaml
+spec:
+  secretStoreRef:
+    name: vault-backend       # when backend=vault
+    kind: ClusterSecretStore
+```
+
+```yaml
+spec:
+  secretStoreRef:
+    name: kubernetes-backend  # when backend=kubernetes
+    kind: ClusterSecretStore
+```
+
+Pattern charts that use the clustergroup `secretStore.name` value pick up the correct name automatically via the overlay files.
+
+### RoleBinding patch
+
+`openshift-external-secrets` 0.0.4 creates a `Role` in `validated-patterns-secrets` for the kubernetes backend but not the matching `RoleBinding`. The local `charts/home-lab-eso-rbac` chart supplies that binding when `backend=kubernetes`.

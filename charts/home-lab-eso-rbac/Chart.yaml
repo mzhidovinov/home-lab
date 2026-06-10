@@ -1,0 +1,5 @@
+apiVersion: v2
+name: home-lab-eso-rbac
+description: RoleBinding for openshift-external-secrets kubernetes backend (chart gap patch)
+type: application
+version: 0.1.0

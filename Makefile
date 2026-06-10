@@ -2,4 +2,15 @@
 # This Makefile includes the common pattern targets from Makefile-common
 # You can add custom targets above or below the include line
 
+.PHONY: secrets-backend-vault secrets-backend-kubernetes
+secrets-backend-vault: ## Set ESO to vault backend (Vault chart stays deployed)
+	@command -v yq >/dev/null 2>&1 || { echo "yq is required"; exit 1; }
+	yq -i '.global.secretStore.backend = "vault"' values-global.yaml
+	@echo "ESO backend set to vault. Commit/push, sync Argo CD, then: make load-secrets"
+
+secrets-backend-kubernetes: ## Set ESO to kubernetes backend (Vault chart stays deployed)
+	@command -v yq >/dev/null 2>&1 || { echo "yq is required"; exit 1; }
+	yq -i '.global.secretStore.backend = "kubernetes"' values-global.yaml
+	@echo "ESO backend set to kubernetes. Commit/push, sync Argo CD, then: make load-secrets"
+
 include Makefile-common

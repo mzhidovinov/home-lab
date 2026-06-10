@@ -1,6 +1,12 @@
 ---
 global:
   pattern: home-lab
+  secretLoader:
+    disabled: false
+  # ESO backend toggle: vault (default) or kubernetes.
+  # HashiCorp Vault stays deployed either way; only the ClusterSecretStore changes.
+  secretStore:
+    backend: vault
   singleArgoCD: true
   options:
     useCSV: false

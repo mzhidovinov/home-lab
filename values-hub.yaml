@@ -1,8 +1,11 @@
 clusterGroup:
   name: hub
+  isHubCluster: true
   # Namespace is a dictionary for easier overriding (lists are supported as well)
   namespaces:
+    home-lab:
     vault:
+    validated-patterns-secrets:
     external-secrets-operator:
       operatorGroup: true
       targetNamespaces: []
@@ -19,6 +22,7 @@ clusterGroup:
   sharedValueFiles:
     - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
     - '/overrides/values-{{ $.Values.global.clusterVersion }}-{{ $.Values.clusterGroup.name }}.yaml'
+    - '/values-secret-store-{{ $.Values.global.secretStore.backend }}.yaml'
   # sharedValueFiles is a flexible mechanism that will add the listed valuefiles to every app defined in the
   # applications section. We intend this to supplement and possibly even replace previous "magic" mechanisms, though
   # we do not at present have a target date for removal.
@@ -48,3 +52,8 @@ clusterGroup:
       argoProject: hub
       chart: openshift-external-secrets
       chartVersion: 0.0.*
+    home-lab-eso-rbac:
+      name: home-lab-eso-rbac
+      namespace: validated-patterns-secrets
+      path: charts/home-lab-eso-rbac
+      argoProject: hub
