@@ -10,6 +10,7 @@ clusterGroup:
       operatorGroup: true
       targetNamespaces: []
     external-secrets:
+    eso-e2e-test:
   subscriptions:
     eso:
       name: openshift-external-secrets-operator
@@ -56,4 +57,9 @@ clusterGroup:
       name: home-lab-eso-rbac
       namespace: validated-patterns-secrets
       path: charts/home-lab-eso-rbac
+      argoProject: hub
+    home-lab-eso-e2e:
+      name: home-lab-eso-e2e
+      namespace: eso-e2e-test
+      path: charts/home-lab-eso-e2e
       argoProject: hub

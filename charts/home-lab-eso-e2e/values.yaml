@@ -1,0 +1,8 @@
+e2eTest:
+  enabled: true
+  namespace: eso-e2e-test
+  targetSecret: e2e-projection
+  refreshInterval: 1m
+  remoteRef:
+    key: ""
+    property: secret
