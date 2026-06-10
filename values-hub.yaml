@@ -53,6 +53,8 @@ clusterGroup:
       argoProject: hub
       chart: openshift-external-secrets
       chartVersion: 0.0.*
+      extraValueFiles:
+        - '/values-eso-operator-backend-vault.yaml'
     home-lab-eso-rbac:
       name: home-lab-eso-rbac
       namespace: validated-patterns-secrets

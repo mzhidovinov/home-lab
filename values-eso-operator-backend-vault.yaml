@@ -1,0 +1,5 @@
+# openshift-external-secrets 0.0.4 renders kubernetes-backend as v1beta1; RH ESO requires v1.
+# Force this chart to vault templates only; kubernetes-backend is supplied by home-lab-eso-rbac.
+global:
+  secretStore:
+    backend: vault
