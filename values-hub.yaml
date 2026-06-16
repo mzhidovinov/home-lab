@@ -29,15 +29,15 @@ clusterGroup:
 #      argoProject: hub
 #      chart: hashicorp-vault
 #      chartVersion: 0.1.*
-#    openshift-external-secrets:
-#      name: openshift-external-secrets
-#      namespace: external-secrets
-#      argoProject: hub
-#      path: charts/openshift-external-secrets
-##      chart: openshift-external-secrets
-##      chartVersion: 0.0.*
-#      extraValueFiles:
-#        - '/values-eso-operator-backend-{{ $.Values.global.secretStore.backend }}.yaml'
+    openshift-external-secrets:
+      name: openshift-external-secrets
+      namespace: external-secrets
+      argoProject: hub
+      path: charts/openshift-external-secrets
+#      chart: openshift-external-secrets
+#      chartVersion: 0.0.*
+      extraValueFiles:
+        - '/values-eso-operator-backend-{{ $.Values.global.secretStore.backend }}.yaml'
     mcp-lifecycle-operator:
       name: mcp-lifecycle-operator
       namespace: mcp-lifecycle-operator-system
