@@ -57,7 +57,7 @@ clusterGroup:
       chart: openshift-external-secrets
       chartVersion: 0.0.*
       extraValueFiles:
-        - '/values-eso-operator-backend-vault.yaml'
+        - '/values-eso-operator-backend-{{ $.Values.global.secretStore.backend }}.yaml'
     home-lab-eso-rbac:
       name: home-lab-eso-rbac
       namespace: validated-patterns-secrets
