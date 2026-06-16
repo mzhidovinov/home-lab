@@ -1,9 +1,0 @@
-# Merged for all applications when global.secretStore.backend=vault
-# Safe to commit: store names and remote ref paths only (no secret values).
-secretStore:
-  name: vault-backend
-  kind: ClusterSecretStore
-e2eTest:
-  remoteRef:
-    key: secret/data/global/config-demo
-    property: secret

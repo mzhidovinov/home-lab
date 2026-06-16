@@ -1,9 +1,0 @@
-# Merged for all applications when global.secretStore.backend=kubernetes
-# Safe to commit: store names and remote ref paths only (no secret values).
-secretStore:
-  name: kubernetes-backend
-  kind: ClusterSecretStore
-e2eTest:
-  remoteRef:
-    key: config-demo
-    property: secret
