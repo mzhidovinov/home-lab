@@ -37,20 +37,13 @@ HashiCorp Vault **always** stays deployed (`vault` application in `values-hub.ya
 
 Backend-specific store metadata (`values-eso-backend-vault.yaml` / `values-eso-backend-kubernetes.yaml`) is merged via `clusterGroup.sharedValueFiles` and sets `secretStore.name` for pattern charts. These files contain **no secret values** and are safe to commit.
 
-Optional local secret overlays use `values-secret-store-vault.yaml` / `values-secret-store-kubernetes.yaml` (gitignored). Copy from the `.template` files if needed — same convention as `values-secret.yaml`:
-
-```bash
-cp values-secret-store-kubernetes.yaml.template values-secret-store-kubernetes.yaml
-cp values-secret-store-vault.yaml.template values-secret-store-vault.yaml
-```
-
 Never commit `values-secret*` files with real credentials. Use `make load-secrets` with `values-secret.yaml` as the primary secret loader per [VP secrets documentation](https://validatedpatterns.io/learn/secrets-management-in-the-validated-patterns-framework/).
 
 ### Switch to kubernetes backend
 
 1. Set the toggle (either edit `values-global.yaml` or run `make secrets-backend-kubernetes`).
 2. Commit and push so Argo CD picks up the change.
-3. Sync the `openshift-external-secrets` and `home-lab-eso-rbac` applications.
+3. Sync the `openshift-external-secrets` application.
 4. Run `make load-secrets` to populate secrets as Kubernetes `Secret` objects in `validated-patterns-secrets`.
 5. Verify:
 
@@ -94,7 +87,7 @@ Pattern charts that use the clustergroup `secretStore.name` value pick up the co
 
 ### RoleBinding patch
 
-`openshift-external-secrets` 0.0.4 creates a `Role` in `validated-patterns-secrets` for the kubernetes backend but not the matching `RoleBinding`. The local `charts/home-lab-eso-rbac` chart supplies that binding when `backend=kubernetes`.
+`openshift-external-secrets` 0.0.4 creates a `Role` in `validated-patterns-secrets` for the kubernetes backend but not the matching `RoleBinding`. The local `charts/eso-rbac` chart supplies that binding when `backend=kubernetes`.
 
 ## OpenShift MCP Server (GitOps)
 
@@ -102,12 +95,12 @@ Two local charts deploy the [MCP Lifecycle Operator](https://github.com/openshif
 
 | Argo application | Chart | Purpose |
 |------------------|-------|---------|
-| `home-lab-mcp-lifecycle-operator` | `charts/home-lab-mcp-lifecycle-operator` | CRD, operator deployment (sync-wave -10) |
-| `home-lab-mcp-server` | `charts/home-lab-mcp-server` | MCPServer CR, ConfigMap, Route, RBAC (sync-wave -5) |
+| `mcp-lifecycle-operator` | `charts/mcp-lifecycle-operator` | CRD, operator deployment (sync-wave -10) |
+| `mcp-server` | `charts/mcp-server` | MCPServer CR, ConfigMap, Route, RBAC (sync-wave -5) |
 
 Requires OCP 4.22+ with **TechPreviewNoUpgrade**. Default route: `https://mcp-server.<hubClusterDomain>/mcp`.
 
-Configure image, route, and RBAC in `charts/home-lab-mcp-server/values.yaml`. Scope access via `rbac.clusterRoleName` (lab default: `cluster-admin`; use `view` or a custom ClusterRole for production).
+Configure image, route, and RBAC in `charts/mcp-server/values.yaml`. Scope access via `rbac.clusterRoleName` (lab default: `cluster-admin`; use `view` or a custom ClusterRole for production).
 
 Verify after Argo sync:
 

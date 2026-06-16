@@ -21,7 +21,7 @@ clusterGroup:
   argoProjects:
     - hub
   sharedValueFiles:
-    - '/values-secret-store-{{ $.Values.global.secretStore.backend }}.yaml'
+    - '/values-eso-backend-{{ $.Values.global.secretStore.backend }}.yaml'
   applications:
 #    vault:
 #      name: vault
@@ -33,8 +33,9 @@ clusterGroup:
       name: openshift-external-secrets
       namespace: external-secrets
       argoProject: hub
-      chart: openshift-external-secrets
-      chartVersion: 0.0.*
+      path: charts/openshift-external-secrets
+#      chart: openshift-external-secrets
+#      chartVersion: 0.0.*
       extraValueFiles:
         - '/values-eso-operator-backend-{{ $.Values.global.secretStore.backend }}.yaml'
     eso-e2e:
