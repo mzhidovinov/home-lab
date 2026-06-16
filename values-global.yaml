@@ -6,7 +6,7 @@ global:
   # ESO backend toggle: vault (default) or kubernetes.
   # HashiCorp Vault stays deployed either way; only the ClusterSecretStore changes.
   secretStore:
-    backend: vault
+    backend: kubernetes
   singleArgoCD: true
   options:
     useCSV: false
