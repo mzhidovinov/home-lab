@@ -38,11 +38,6 @@ clusterGroup:
 #      chartVersion: 0.0.*
       extraValueFiles:
         - '/values-eso-operator-backend-{{ $.Values.global.secretStore.backend }}.yaml'
-    eso-e2e:
-      name: eso-e2e
-      namespace: eso-e2e-test
-      path: charts/eso-e2e
-      argoProject: hub
     mcp-lifecycle-operator:
       name: mcp-lifecycle-operator
       namespace: mcp-lifecycle-operator-system

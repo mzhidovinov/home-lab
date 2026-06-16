@@ -2,7 +2,3 @@
 secretStore:
   name: vault-backend
   kind: ClusterSecretStore
-e2eTest:
-  remoteRef:
-    key: secret/data/global/config-demo
-    property: secret
