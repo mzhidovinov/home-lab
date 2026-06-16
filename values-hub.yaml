@@ -40,7 +40,7 @@ clusterGroup:
     eso-e2e:
       name: eso-e2e
       namespace: eso-e2e-test
-      path: charts/home-lab-eso-e2e
+      path: charts/eso-e2e
       argoProject: hub
     mcp-lifecycle-operator:
       name: mcp-lifecycle-operator
