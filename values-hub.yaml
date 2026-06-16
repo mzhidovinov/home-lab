@@ -20,29 +20,8 @@ clusterGroup:
       channel: stable-v1
   argoProjects:
     - hub
-  # Explicitly mention the cluster-state based overrides we plan to use for this pattern.
-  # We can use self-referential variables because the chart calls the tpl function with these variables defined
   sharedValueFiles:
-    - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
-    - '/overrides/values-{{ $.Values.global.clusterVersion }}-{{ $.Values.clusterGroup.name }}.yaml'
-#    - '/values-eso-backend-{{ $.Values.global.secretStore.backend }}.yaml'
     - '/values-secret-store-{{ $.Values.global.secretStore.backend }}.yaml'
-  # sharedValueFiles is a flexible mechanism that will add the listed valuefiles to every app defined in the
-  # applications section. We intend this to supplement and possibly even replace previous "magic" mechanisms, though
-  # we do not at present have a target date for removal.
-  #
-  # To replicate the "classic" magic include structure, the clusterGroup would need all of these
-  # sharedValueFiles, in this order:
-  #   - '/overrides/values-{{ $.Values.global.clusterPlatform }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.clusterPlatform }}-{{ $.Values.global.clusterVersion }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.clusterPlatform }}-{{ $.Values.clusterGroup.name }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.clusterVersion }}-{{ $.Values.clusterGroup.name }}.yaml"
-  #   - '/overrides/values-{{ $.Values.global.localClusterName }}.yaml'
-
-  # This kind of variable substitution will work with any of the variables the Validated Patterns operator knows
-  # about and sets, so this is also possible, for example:
-  #   - '/overrides/values-{{ $.Values.global.hubClusterDomain }}.yaml'
-  #   - '/overrides/values-{{ $.Values.global.localClusterDomain }}.yaml'
   applications:
 #    vault:
 #      name: vault
@@ -58,27 +37,22 @@ clusterGroup:
       chartVersion: 0.0.*
       extraValueFiles:
         - '/values-eso-operator-backend-{{ $.Values.global.secretStore.backend }}.yaml'
-    home-lab-eso-rbac:
-      name: home-lab-eso-rbac
-      namespace: validated-patterns-secrets
-      path: charts/home-lab-eso-rbac
-      argoProject: hub
-    home-lab-eso-e2e:
-      name: home-lab-eso-e2e
+    eso-e2e:
+      name: eso-e2e
       namespace: eso-e2e-test
       path: charts/home-lab-eso-e2e
       argoProject: hub
-    home-lab-mcp-lifecycle-operator:
-      name: home-lab-mcp-lifecycle-operator
+    mcp-lifecycle-operator:
+      name: mcp-lifecycle-operator
       namespace: mcp-lifecycle-operator-system
-      path: charts/home-lab-mcp-lifecycle-operator
+      path: charts/mcp-lifecycle-operator
       argoProject: hub
       annotations:
         argocd.argoproj.io/sync-wave: "-10"
-    home-lab-mcp-server:
-      name: home-lab-mcp-server
+    mcp-server:
+      name: mcp-server
       namespace: openshift-mcp-server
-      path: charts/home-lab-mcp-server
+      path: charts/mcp-server
       argoProject: hub
       annotations:
         argocd.argoproj.io/sync-wave: "-5"
