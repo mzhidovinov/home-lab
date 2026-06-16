@@ -1,0 +1,8 @@
+# Merged for all applications when global.secretStore.backend=kubernetes
+secretStore:
+  name: kubernetes-backend
+  kind: ClusterSecretStore
+e2eTest:
+  remoteRef:
+    key: config-demo
+    property: secret

@@ -1,0 +1,8 @@
+# Merged for all applications when global.secretStore.backend=vault
+secretStore:
+  name: vault-backend
+  kind: ClusterSecretStore
+e2eTest:
+  remoteRef:
+    key: secret/data/global/config-demo
+    property: secret
