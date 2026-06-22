@@ -6,6 +6,7 @@ clusterGroup:
     home-lab:
     vault:
     validated-patterns-secrets:
+    open-cluster-management:
     external-secrets-operator:
       operatorGroup: true
       targetNamespaces: []
@@ -29,6 +30,10 @@ clusterGroup:
 #      argoProject: hub
 #      chart: hashicorp-vault
 #      chartVersion: 0.1.*
+    acm:
+      name: advanced-cluster-management
+      namespace: open-cluster-management
+      channel: release-2.17
     openshift-external-secrets:
       name: openshift-external-secrets
       namespace: external-secrets
