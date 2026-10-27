@@ -35,12 +35,12 @@ clusterGroup:
 #      argoProject: hub
 #      chart: hashicorp-vault
 #      chartVersion: 0.1.*
-    acm:
-      name: acm
-      namespace: open-cluster-management
-      argoProject: hub
-      chart: acm
-      chartVersion: 0.2.*
+#    acm:
+#      name: acm
+#      namespace: open-cluster-management
+#      argoProject: hub
+#      chart: acm
+#      chartVersion: 0.2.*
     openshift-external-secrets:
       name: openshift-external-secrets
       namespace: external-secrets
